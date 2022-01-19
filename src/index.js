@@ -2,12 +2,19 @@
 import * as THREE from 'three';
 //import { OrbitControls } from "https://threejs.org/examples/jsm/controls/OrbitControls.js";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-/*import Front from './images/room-front.jpg'
-import Back from './images/room-back.jpg'
-import Top from './images/room-top.jpg'
-import Floor from './images/room-floor.jpg'
-import Right from './images/room-right.jpg'
-import Left from './images/room-left.jpg' */
+/* import Front from './images/room_ft.jpg'
+import Back from './images/room_bk.jpg'
+import Up from './images/room_up.jpg'
+import Down from './images/room_dn.jpg'
+import Right from './images/room_rt.jpg'
+import Left from './images/room_lf.jpg' */
+
+import Front from './skybox_ft.png'
+import Back from './skybox_bk.png'
+import Up from './skybox_up.png'
+import Down from './skybox_dn.png'
+import Right from './skybox_rt.png'
+import Left from './skybox_lf.png'
 
 /* let scene, camera, renderer, skyboxGeo, skybox;
 let skyboxImage = "room";
@@ -71,33 +78,69 @@ function animate() {
 init();
  */
 
+
+  /*  var myImage = new Image();
+   myImage.src = '../src/skybox_bk.png';
+   myImage.onerror = function(){
+    alert('not found');
+   } */
+
+
 let scene, camera, renderer, skyboxGeo, skybox, controls, myReq;
 let zoomOut = false;
 let autoRotate = true;
-let skyboxImage = 'room';
+let skyboxImage = 'skybox';
 
-function createPathStrings(filename) {
+/* function createPathStrings(filename) {
   //const basePath = `https://raw.githubusercontent.com/codypearce/some-skyboxes/master/skyboxes/${filename}/`;
-  const basePath ="images/"
+  
+  const basePath ="./"
   const baseFilename = basePath + filename;
-  const fileType = filename == 'room' ? '.jpg' : '.png';
+  const fileType = filename == 'skybox' ? '.png' : '.jpg';
   const sides = ['ft', 'bk', 'up', 'dn', 'rt', 'lf'];
-  const pathStings = sides.map(side => {
+
+   const pathStings = sides.map(side => {
     return baseFilename + '_' + side + fileType;
   });
   console.log('pathStings', pathStings)
   return pathStings;
-}
+} */
 
 function createMaterialArray(filename) {
   const skyboxImagepaths = createPathStrings(filename);
   const materialArray = skyboxImagepaths.map(image => {
-    let texture = new THREE.TextureLoader().load(image);
+    let texture = new THREE.TextureLoader().load(image.defult);
 
     return new THREE.MeshBasicMaterial({ map: texture, side: THREE.BackSide });
   });
   return materialArray;
-}
+} 
+
+/* function createMaterialArray() {
+    console.log(Front);
+    const materialArray = []
+    let texture_ft = new THREE.TextureLoader().load( Front);
+    let texture_bk = new THREE.TextureLoader().load(Back);
+    let texture_up = new THREE.TextureLoader().load( Up);
+    let texture_dn = new THREE.TextureLoader().load( Down);
+    let texture_rt = new THREE.TextureLoader().load( Right);
+    let texture_lf = new THREE.TextureLoader().load( Left);
+      
+    materialArray.push(new THREE.MeshBasicMaterial( { map: texture_ft }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: texture_bk }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: texture_up }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: texture_dn }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: texture_rt }));
+    materialArray.push(new THREE.MeshBasicMaterial( { map: texture_lf }));
+
+    for (let i = 0; i < 6; i++) {
+      materialArray[i].side = THREE.BackSide;
+      //materialArray[i].map = texture;
+    }
+
+    return materialArray;
+}  */
+
 
 function init() {
 
@@ -116,6 +159,7 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   const materialArray = createMaterialArray(skyboxImage);
+  //const materialArray = createMaterialArray();
 
   skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
   skybox = new THREE.Mesh(skyboxGeo, materialArray);

@@ -6,16 +6,22 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  module:{
+  devServer: {
+    headers: { "Access-Control-Allow-Origin": "*" },
+    https: false,
+  },
+  module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ['style-loader','css-loader']
+        use: ['style-loader', 'css-loader'],
       },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
-      }
-    ]
-  }
+     {
+
+       test: /\.(png|svg|jpg|jpeg|gif)$/i,
+       type: 'asset/resource',
+
+     },
+    ],
+  },
 };
